@@ -1,7 +1,4 @@
 function [recovered_Dictionary,output] = Polynomial_Dictionary_Learning(Y, param)
-
-path = 'C:\Users\Cristina\Documents\GitHub\OrganizedFiles\DictionaryLearning\AddingThirdKernel\Results\'; %Folder containing the results to save
-% Set Parameters
 lambda_powers = param.lambda_powers;
 Laplacian_powers = param.Laplacian_powers;
 
@@ -90,17 +87,17 @@ for iterNum = 1 : param.numIteration
     % Save the representation of the learned kernels without constraints
     % yet
     
-    if iterNum == 6
-        figure('Name','Kernels learned without constraints')
-        hold on
-        for s = 1 : param.S
-            plot(param.lambda_sym,output.kernel(:,s));
-        end
-        hold off
-        
-        filename = [path,'Intermediate_kernel_plot.png'];
-        saveas(gcf,filename);
-    end
+%     if iterNum == 6
+%         figure('Name','Kernels learned without constraints')
+%         hold on
+%         for s = 1 : param.S
+%             plot(param.lambda_sym,output.kernel(:,s));
+%         end
+%         hold off
+%         
+%         filename = [path,'Intermediate_kernel_plot.png'];
+%         saveas(gcf,filename);
+%     end
     
     %% Construct the new dictionary
 

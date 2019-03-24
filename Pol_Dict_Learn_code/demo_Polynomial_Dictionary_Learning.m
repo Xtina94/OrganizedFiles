@@ -14,14 +14,14 @@ clear all
 close all
 
 %% Adding the paths
-addpath('C:\Users\Cristina\Documents\GitHub\OrganizedFiles\Optimizers'); %Folder conatining the yalmip tools
-addpath('C:\Users\Cristina\Documents\GitHub\OrganizedFiles\Pol_Dict_Learn_code\DataSets'); %Folder containing the Data sets
-addpath('C:\Users\Cristina\Documents\GitHub\OrganizedFiles\DataSets\Comparison_datasets\'); %Folder containing the copmarison datasets
-addpath('C:\Users\Cristina\Documents\GitHub\OrganizedFiles\DataSets\'); %Folder containing the training and verification dataset
-path = 'C:\Users\Cristina\Documents\GitHub\OrganizedFiles\Pol_Dict_Learn_code\Results\'; %Folder containing the results to save
+addpath('C:\Users\cryga\Documents\GitHub\OrganizedFiles\Optimizers'); %Folder conatining the yalmip tools
+addpath('C:\Users\cryga\Documents\GitHub\OrganizedFiles\Pol_Dict_Learn_code\DataSets'); %Folder containing the Data sets
+addpath('C:\Users\cryga\Documents\GitHub\OrganizedFiles\DataSets\Comparison_datasets\'); %Folder containing the copmarison datasets
+addpath('C:\Users\cryga\Documents\GitHub\OrganizedFiles\DataSets\'); %Folder containing the training and verification dataset
+path = 'C:\Users\cryga\Documents\GitHub\OrganizedFiles\Pol_Dict_Learn_code\Results\'; %Folder containing the results to save
 
-%% Loaging the required dataset
-flag = 2;
+%% Loading the required dataset
+flag = 4;
 switch flag
     case 1
         load ComparisonDorina.mat
@@ -34,7 +34,10 @@ switch flag
     case 3
         load ComparisonUber.mat
         ds = 'Dataset used: data from Uber';
-        load DataSetUber.mat        
+        load DataSetUber.mat
+    case 4
+        load 'C:\Users\cryga\Documents\GitHub\OrganizedFiles\DataSets\Comparison_datasets\ComparisonDorinaLF.mat'
+        load 'C:\Users\cryga\Documents\GitHub\OrganizedFiles\DataSets\DataSetDorinaLF.mat'
 end
 
 %% Set the parameters
@@ -44,27 +47,52 @@ switch flag
         param.S = 4;  % number of subdictionaries 
         param.epsilon = 0.02; % we assume that epsilon_1 = epsilon_2 = epsilon
         degree = 20;
+        param.N = 100; % number of nodes in the graph
     case 2 %Cristina
         param.S = 2;  % number of subdictionaries 
         param.epsilon = 0.02; % we assume that epsilon_1 = epsilon_2 = epsilon
         degree = 15;
+        param.N = 100; % number of nodes in the graph
     case 3 %Uber
         param.S = 2;  % number of subdictionaries
-        param.epsilon = 0.02; % we assume that epsilon_1 = epsilon_2 = epsilon
+        param.epsilon = 0.2; % we assume that epsilon_1 = epsilon_2 = epsilon
         degree = 15;
+        param.N = 100; % number of nodes in the graph
+    case 4 % Dorina Low Frequency kernel
+        param.S = 1;
+        param.epsilon = 1; % we assume that epsilon_1 = epsilon_2 = epsilon
+        degree = 20;
+        param.N = 30;
+        ds = 'Dataset used: Synthetic data from Dorina - 1 single kernel';
+        ds_name = 'DorinaLF';
 end
 
-param.N = 100; % number of nodes in the graph
 param.J = param.N * param.S; % total number of atoms 
 param.K = degree*ones(1,param.S);
 param.T0 = 4; % sparsity level in the training phase
 param.c = 1; % spectral control parameters
 param.mu = 1e-2; % polynomial regularizer paremeter
 
-%% Plot the random graph
+%% Initialize the kernel coefficients
+temp = comp_alpha;
+comp_alpha = zeros(degree+1,param.S);
+for i = 1:param.S
+    comp_alpha(:,i) = temp((degree+1)*(i-1) + 1:(degree+1)*i);
+end
 
-% figure()   
-% gplot(A,[XCoords YCoords])
+[comp_lambdaSym,comp_indexSym] = sort(diag(comp_eigenVal));
+comp_lambdaPowerMx(:,2) = comp_lambdaSym;
+
+for i = 1:degree+1
+    comp_lambdaPowerMx(:,i) = comp_lambdaPowerMx(:,2).^(i-1);
+end
+
+comp_ker = zeros(param.N,param.S);
+for i = 1 : param.S
+    for n = 1:param.N
+        comp_ker(n,i) = comp_ker(n,i) + comp_lambdaPowerMx(n,:)*comp_alpha(:,i);
+    end
+end
 
 %% Compute the Laplacian and the normalized laplacian operator
     
@@ -129,8 +157,19 @@ learned_alpha = output_Pol.alpha;
 save(filename,'ds','Dictionary_Pol','learned_alpha','CoefMatrix_Pol','errorTesting_Pol','avgCPU');
 
 % The kernels plot
-figure('Name','Final Kernels')
+figure('Name','Comparison between the Kernels')
+subplot(2,1,1)
+title('Original kernels');
 hold on
+axis([0 1.4 0 1]);
+for s = 1 : param.S
+    plot(comp_lambdaSym,comp_ker(:,s));
+end
+hold off
+subplot(2,1,2)
+title('learned Kernels')
+hold on
+axis([0 1.4 0 1]);
 for s = 1 : param.S
     plot(param.lambda_sym,g_ker(:,s));
 end

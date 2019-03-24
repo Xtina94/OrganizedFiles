@@ -7,7 +7,7 @@ addpath('C:\Users\cryga\Documents\GitHub\OrganizedFiles\DataSets\Comparison_data
 addpath('C:\Users\cryga\Documents\GitHub\OrganizedFiles\DataSets\'); %Folder containing the training and verification dataset
 
 %% Loaging the required dataset
-flag = 1;
+flag = 5;
 switch flag
     case 1
 % % %         load ComparisonDorina.mat
@@ -87,7 +87,7 @@ param.K = degree*ones(1,param.S);
 param.T0 = 4; % sparsity level in the training phase
 param.c = 1; % spectral control parameters
 param.mu = 1e-2; % polynomial regularizer paremeter
-path = ['C:\Users\cryga\Desktop\OrganizedFiles\DictionaryLearning\Constraints\Results\16.02.19\',num2str(ds_name),'\']; %Folder containing the results to save
+path = ['C:\Users\cryga\Desktop\OrganizedFiles\DictionaryLearning\Constraints\Results\28.02.2019\',num2str(ds_name),'\']; %Folder containing the results to save
 
 for trial = 1:2
     %% Initialize the comparison kernel coefficients

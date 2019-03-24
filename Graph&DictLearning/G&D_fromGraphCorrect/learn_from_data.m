@@ -2,13 +2,13 @@ clear all
 close all
 
 %% Adding the paths
-addpath('C:\Users\Cristina\Documents\GitHub\OrganizedFiles\Optimizers'); %Folder conatining the yalmip tools
-addpath('C:\Users\Cristina\Documents\GitHub\OrganizedFiles\DataSets\Comparison_datasets\'); %Folder containing the comparison datasets
-addpath('C:\Users\Cristina\Documents\GitHub\OrganizedFiles\DataSets\'); %Folder containing the training and verification dataset
-addpath('C:\Users\Cristina\Documents\GitHub\OrganizedFiles\GeneratingKernels\Results'); %Folder conatining the heat kernel coefficients
-path = 'C:\Users\Cristina\Documents\GitHub\OrganizedFiles\Graph&DictLearning\G&D_fromGraphCorrect\Results\28.07.18\'; %Folder containing the results to save
+addpath('C:\Users\cryga\Documents\GitHub\OrganizedFiles\Optimizers'); %Folder conatining the yalmip tools
+addpath('C:\Users\cryga\Documents\GitHub\OrganizedFiles\DataSets\Comparison_datasets\'); %Folder containing the comparison datasets
+addpath('C:\Users\cryga\Documents\GitHub\OrganizedFiles\DataSets\'); %Folder containing the training and verification dataset
+addpath('C:\Users\cryga\Documents\GitHub\OrganizedFiles\GeneratingKernels\Results'); %Folder conatining the heat kernel coefficients
+path = 'C:\Users\cryga\Documents\GitHub\OrganizedFiles\Graph&DictLearning\G&D_fromGraphCorrect\Results\18.03.2019\'; %Folder containing the results to save
 
-flag = 7;
+flag = 4;
 
 switch flag
     case 1 %Dorina
@@ -131,7 +131,7 @@ param.y_size = size(param.y,2);
 param.T0 = 4; %sparsity level (# of atoms in each signals representation)
 param.max = 0;
 
-for trial = 1:2
+for trial = 1:1
     %% Initialize the kernel coefficients
     temp = comp_alpha;
     comp_alpha = zeros(K+1,param.S);

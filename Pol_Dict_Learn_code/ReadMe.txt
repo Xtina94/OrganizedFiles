@@ -1,0 +1,1 @@
+Algoritmo originale di Dorina da cui ho ricavato il groundtruth

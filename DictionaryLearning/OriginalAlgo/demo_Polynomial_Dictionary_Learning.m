@@ -2,12 +2,12 @@ clear all
 close all
 
 %% Adding the paths
-addpath('C:\Users\Cristina\Documents\GitHub\OrganizedFiles\Optimizers'); %Folder conatining the yalmip tools
-addpath('C:\Users\Cristina\Documents\GitHub\OrganizedFiles\DataSets\Comparison_datasets\'); %Folder containing the copmarison datasets
-addpath('C:\Users\Cristina\Documents\GitHub\OrganizedFiles\DataSets\'); %Folder containing the training and verification dataset
+addpath('C:\Users\cryga\Documents\GitHub\OrganizedFiles\Optimizers'); %Folder conatining the yalmip tools
+addpath('C:\Users\cryga\Documents\GitHub\OrganizedFiles\DataSets\Comparison_datasets\'); %Folder containing the copmarison datasets
+addpath('C:\Users\cryga\Documents\GitHub\OrganizedFiles\DataSets\'); %Folder containing the training and verification dataset
 
 %% Loaging the required dataset
-flag = 4;
+flag = 5;
 switch flag
     case 1
         load ComparisonDorina.mat
@@ -21,6 +21,9 @@ switch flag
     case 4
         load ComparisonUber.mat
         load DataSetUber.mat
+    case 5
+        load 'C:\Users\cryga\Documents\GitHub\OrganizedFiles\DataSets\Comparison_datasets\ComparisonDorinaLF.mat'
+        load 'C:\Users\cryga\Documents\GitHub\OrganizedFiles\DataSets\DataSetDorinaLF.mat'
 end
 
 %% Set the parameters
@@ -67,10 +70,18 @@ switch flag
         ds_name = 'Uber';
         param.percentage = 8;
         param.thresh = param.percentage+6;
+    case 5 % Dorina Low Frequency kernel
+        param.S = 1;
+        param.epsilon = 0.2; % we assume that epsilon_1 = epsilon_2 = epsilon
+        degree = 20;
+        param.N = 30;
+        ds = 'Dataset used: Synthetic data from Dorina - 1 single kernel';
+        ds_name = 'DorinaLF';
+        param.percentage = 5;
+        param.thresh = param.percentage + 14;
 end
 
-path = ['C:\Users\Cristina\Documents\GitHub\OrganizedFiles\DictionaryLearning\OriginalAlgo\Results\04.07.18\', num2str(ds_name),'\']; %Folder containing the results to save
-path = '';
+path = ['C:\Users\cryga\Documents\GitHub\OrganizedFiles\DictionaryLearning\OriginalAlgo\Results\24.03.19\', num2str(ds_name),'\']; %Folder containing the results to save
 param.J = param.N * param.S; % total number of atoms 
 param.K = degree*ones(1,param.S);
 param.T0 = 4; % sparsity level in the training phase

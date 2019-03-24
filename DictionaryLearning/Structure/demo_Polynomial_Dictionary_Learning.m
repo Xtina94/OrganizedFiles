@@ -2,7 +2,7 @@ clear all
 close all
 
 %% Adding the paths
-addpath('C:\Users\Cristina\Documents\GitHub\OrganizedFiles\Optimizers'); %Folder conatining the yalmip tools
+addpath('C:\Users\cryga\Documents\GitHub\OrganizedFiles\Optimizers'); %Folder conatining the yalmip tools
 % % % addpath('C:\Users\Cristina\Documents\GitHub\OrganizedFiles\DataSets\Comparison_datasets\'; %Folder containing the comparison datasets
 % % % addpath('C:\Users\Cristina\Documents\GitHub\OrganizedFiles\DataSets\'; %Folder containing the training and verification dataset
 
@@ -10,20 +10,20 @@ addpath('C:\Users\Cristina\Documents\GitHub\OrganizedFiles\Optimizers'); %Folder
 flag = 5;
 switch flag
     case 1
-        load 'C:\Users\Cristina\Documents\GitHub\OrganizedFiles\DataSets\Comparison_datasets\ComparisonDorina.mat'];
-        load 'C:\Users\Cristina\Documents\GitHub\OrganizedFiles\DataSets\DataSetDorina.mat'];
+        load 'C:\Users\cryga\Documents\GitHub\OrganizedFiles\DataSets\Comparison_datasets\ComparisonDorina.mat'];
+        load 'C:\Users\cryga\Documents\GitHub\OrganizedFiles\DataSets\DataSetDorina.mat'];
     case 2
-        load 'C:\Users\Cristina\Documents\GitHub\OrganizedFiles\DataSets\Comparison_datasets\ComparisonHeat30.mat'
-        load 'C:\Users\Cristina\Documents\GitHub\OrganizedFiles\DataSets\DataSetHeat30.mat'
+        load 'C:\Users\cryga\Documents\GitHub\OrganizedFiles\DataSets\Comparison_datasets\ComparisonHeat30.mat'
+        load 'C:\Users\cryga\Documents\GitHub\OrganizedFiles\DataSets\DataSetHeat30.mat'
     case 3
-        load 'C:\Users\Cristina\Documents\GitHub\OrganizedFiles\DataSets\Comparison_datasets\ComparisonUber.mat'
-        load 'C:\Users\Cristina\Documents\GitHub\OrganizedFiles\DataSets\DataSetUber.mat'
+        load 'C:\Users\cryga\Documents\GitHub\OrganizedFiles\DataSets\Comparison_datasets\ComparisonUber.mat'
+        load 'C:\Users\cryga\Documents\GitHub\OrganizedFiles\DataSets\DataSetUber.mat'
     case 4
-        load 'C:\Users\Cristina\Documents\GitHub\OrganizedFiles\DataSets\Comparison_datasets\ComparisonDoubleHeat.mat'
-        load 'C:\Users\Cristina\Documents\GitHub\OrganizedFiles\DataSets\DataSetDoubleHeat.mat'
+        load 'C:\Users\cryga\Documents\GitHub\OrganizedFiles\DataSets\Comparison_datasets\ComparisonDoubleHeat.mat'
+        load 'C:\Users\cryga\Documents\GitHub\OrganizedFiles\DataSets\DataSetDoubleHeat.mat'
     case 5
-        load 'C:\Users\Cristina\Documents\GitHub\OrganizedFiles\DataSets\Comparison_datasets\ComparisonDorinaLF.mat'
-        load 'C:\Users\Cristina\Documents\GitHub\OrganizedFiles\DataSets\DataSetDorinaLF.mat'
+        load 'C:\Users\cryga\Documents\GitHub\OrganizedFiles\DataSets\Comparison_datasets\ComparisonDorinaLF.mat'
+        load 'C:\Users\cryga\Documents\GitHub\OrganizedFiles\DataSets\DataSetDorinaLF.mat'
 end
 
 %% Set the parameters
@@ -86,7 +86,7 @@ param.K = degree*ones(1,param.S);
 param.T0 = 4; % sparsity level in the training phase
 param.c = 1; % spectral control parameters
 param.mu = 1e-2; % polynomial regularizer paremeter
-path = ['C:\Users\Cristina\Documents\GitHub\OrganizedFiles\DictionaryLearning\Structure\Results\28.07.18\',num2str(ds_name),'\']; %Folder containing the results to save
+path = ['C:\Users\cryga\Documents\GitHub\OrganizedFiles\DictionaryLearning\Structure\Results\24.03.19\',num2str(ds_name),'\']; %Folder containing the results to save
 
 %% Initialize the kernel coefficients
 temp = comp_alpha;
@@ -138,7 +138,7 @@ for trial = 1:1
 
     param.InitializationMethod =  'Random_kernels';
     param.displayProgress = 1;
-    param.numIteration = 5;
+    param.numIteration = 50;
     param.plot_kernels = 1; % plot the learned polynomial kernels after each iteration
     param.quadratic = 0; % solve the quadratic program using interior point methods
 
@@ -201,6 +201,7 @@ for trial = 1:1
     subplot(2,1,1)
     title('Original kernels');
     hold on
+    axis([0 1.4 0 1]);
     for s = 1 : param.S
         plot(comp_lambdaSym,comp_ker(:,s));
     end
@@ -208,6 +209,7 @@ for trial = 1:1
     subplot(2,1,2)
     title('learned kernels');
     hold on
+    axis([0 1.4 0 1]);
     for s = 1 : param.S
     %     plot(param.lambda_sym(4:length(param.lambda_sym)),output_Pol.kernel(4:length(output_Pol.kernel),s));
     plot(param.lambda_sym,output_Pol.kernel(:,s));
